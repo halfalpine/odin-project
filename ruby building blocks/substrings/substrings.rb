@@ -19,9 +19,7 @@ def substrings(string, array)
   end
 
   substrings_hash.each do |word, count|
-    #if (count > 0)
       puts word, count
-    #end
   end
 end
 
@@ -32,4 +30,4 @@ substrings("Howdy partner, sit down! How's it going?", dictionary)
 # "i"=> 3, "own"=>1,"part"=>1,"partner"=>1,"sit"=>1}
 
 
-
+#Could you solve this by creadting a hash w/o keys and then iterating through it? Slick!
