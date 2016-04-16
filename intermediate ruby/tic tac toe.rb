@@ -13,15 +13,22 @@ module TTT
     def welcome_contestants 
       puts "\nWelcome! Let's play a game of tic-tac-toe."
       puts "Player 1, you will be X's. Please enter your name."
-      player_1 = gets.chomp
-      check_name(player_1) # Add method!
+      @x = get_name
       puts "Player 2, you will be O's. Please enter your name."
-      player_2 = gets.chomp
-      check_name(player_2) 
-      # How do I instantiate a new instance of Player?
-      # How do I input attributes of the new player one at a time?
+      @o = get_name 
+      puts "\nWelcome, #{@x.name} and #{@o.name}!"
+      @current_game = Game.new 
     end
   
+    def get_name
+      @name = gets.chomp
+      unless @name =~ /^[A-Z][a-z]+$/ 
+        puts "Did you make a mistake? Try again."
+        get_name
+      end
+      Player.new(@name)
+    end
+
     def overall_score
     end
   
@@ -58,9 +65,9 @@ module TTT
     # Tracks a player's name and score
     attr_accessor :name, :score 
   
-    def initialize(name, score = 0)
+    def initialize(name)
       @name = name
-      @score = score
+      @score = 0
     end
   end
 
