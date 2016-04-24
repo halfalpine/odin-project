@@ -1,3 +1,5 @@
+
+
 module TTT
   # Constants
   WINS = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [2, 5, 8], [3, 6, 9], [1, 5, 9], [3, 5, 7]]
@@ -7,6 +9,7 @@ module TTT
   class Tournament
     # Tracks each player's score
     def initialize
+      @current_player = 0
       welcome_contestants
     end
 
@@ -17,6 +20,7 @@ module TTT
       puts "Player 2, you will be O's. Please enter your name."
       @o = get_name 
       puts "\nWelcome, #{@x.name} and #{@o.name}!"
+      @current_player = @x
       @current_game = Game.new 
     end
   
@@ -38,7 +42,6 @@ module TTT
   class Game
     # Does board need to be an attr_accessor variable?
     # Does the Game need to have a winner attr_accessor variable?
-    # Should board hold both X's and O's?
     def initialize
       @board = (0..9).map{ |i| i = "_"}
       turn
@@ -46,6 +49,11 @@ module TTT
   
     def turn
       show(@board)
+      puts "\nPick a square, #{@current_player.name}."
+      #selection = gets.chomp if square_available?
+      #Turn decider
+      #Print welcome
+      #Get input
       game_over? # Add method!
     end
   
@@ -53,8 +61,14 @@ module TTT
       puts "\nHere is the map to the board:"
       puts MATRIX
       puts "Here is the current board"
-      puts board[SQUARES] # Fix this later with some kind of block!
+      board_image
     end
+
+    def board_image
+      puts "#{@board[1]}|#{@board[2]}|#{@board[3]}\n"
+      puts "#{@board[4]}|#{@board[5]}|#{@board[6]}\n"
+      puts "#{@board[7]}|#{@board[8]}|#{@board[9]}\n"
+     end
 
     def game_over?
     end
