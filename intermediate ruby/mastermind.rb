@@ -33,16 +33,16 @@ class Play
     @raw_input = gets.chomp
     process_input
     check_input
+    puts "Input is valid!" #hack
   end
 
   def check_input
     check_length
     valid_colors?
-    puts 
   end
 
   def valid_colors?
-    puts @processed_input
+    @processed_input.each {|color| prompt_input unless (color & COLORS.any?)}
   end
 
   def check_length
