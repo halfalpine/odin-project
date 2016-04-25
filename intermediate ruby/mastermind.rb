@@ -1,8 +1,5 @@
-#Code: One is 
-
+COLORS =  %w{ RED BLU YEL GRE WHI BLA }
 class Game
-
-  COLORS =  %w{ RED, BLU, YEL, GRE, WHI, BLA }
 
   attr_reader :answer
 
@@ -42,7 +39,7 @@ class Play
   end
 
   def valid_colors?
-    @processed_input.each {|color| prompt_input unless (color & COLORS.any?)}
+    prompt_input unless (@processed_input - COLORS).empty?
   end
 
   def check_length
