@@ -1,10 +1,10 @@
-COLORS =  %w{ RED BLU YEL GRE WHI BLA }
+COLORS =  %w{ RED RED RED RED BLU BLU BLU BLU YEL YEL YEL YEL GRE GRE GRE GRE WHI WHI WHI WHI BLA BLA BLA BLA }
 class Game
 
   attr_reader :answer
 
   def initialize
-    @answer = Array.new(4) { rand(0..5) }
+    @answer = COLORS.shuffle
   end
 
 end
@@ -12,7 +12,7 @@ end
 class Play
 
   def initialize
-    @answer = Game.new.answer
+    @answer = COLORS.shuffle.values_at(0..3)
     @turns = 12
     @attempts = []
     rules
@@ -20,9 +20,33 @@ class Play
   end
 
   def turn
+    @turns -= 1
     show_board
-    # update_guesses
     prompt_input
+    game_over? || turn
+  end
+
+  def game_over?
+    puts "your guess was #{@processed_input[0..3]}" #HACK
+    puts "the answer was #{@answer}" #HACK
+    you_win if @processed_input[(0..3)] == @answer
+    @turns == 0 ? you_lose : turn
+  end
+
+  def you_lose
+    puts "GAME OVER."
+    play_again?
+  end
+
+  def you_win
+    puts "YOU WIN!"
+    play_again?
+  end
+
+  def play_again?
+    puts "Press any key to play again, ENTER to quit."
+    response = gets.chomp
+    response == "" ? abort : initialize
   end
 
   def prompt_input
@@ -30,12 +54,27 @@ class Play
     @raw_input = gets.chomp
     process_input
     check_input
-    puts "Input is valid!" #hack
   end
 
   def check_input
     check_length
     valid_colors?
+    add_keys #Black and white key codes are stored in the array item for each turn
+    @attempts.push(@processed_input)
+  end
+
+  def add_keys
+    for x in (0..3)
+      @processed_input.push(" X") if @processed_input[x] == @answer[x]
+    end
+    for x in (0..3)
+      puts @processed_input[x]
+      if @answer.include?(@processed_input[x])
+        if @processed_input[x] != @answer[x]
+          @processed_input.push(" O")
+        end
+      end
+    end
   end
 
   def valid_colors?
@@ -56,18 +95,15 @@ class Play
   end
 
   def show_board
-    #show_attempts
+    puts ""
+    @attempts.each do |attempt|
+      puts attempt.join(" ") + " "
+    end
     @turns.times do
        puts "xxx xxx xxx xxx"
     end
     puts %q{--- --- --- ---}
     puts %q{  MASTERMIND!  }
-  end
-
-  def show_attempts
-    @attempts.each do |attempt|
-      #attempt is an array of four color codes
-    end
   end
 
   def rules
