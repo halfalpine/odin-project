@@ -29,8 +29,6 @@ class Play
   end
 
   def game_over?
-    puts "your guess was #{@processed_input[0..3]}" #HACK
-    puts "the answer was #{@answer}" #HACK
     you_win if @processed_input[(0..3)] == @answer
     @turns == 0 ? you_lose : turn
   end
@@ -73,7 +71,6 @@ class Play
       @processed_input.push(" X") if @processed_input[x] == @answer[x]
     end
     for x in (0..3)
-      puts @processed_input[x]
       if @answer.include?(@processed_input[x])
         if @processed_input[x] != @answer[x]
           @processed_input.push(" O")
@@ -129,10 +126,31 @@ class Play
   end
 
   def create_code
-    puts "Enter four colors: RED, BLUE YELLOW, GREEN, WHITE, or BLACK"
     prompt_input
     process_input
+    @answer = @processed_input
+    computer_turn
+  end
 
+  def computer_turn
+    @turns -= 1
+    computer_guess
+    add_keys
+    @attempts.push(@processed_input)
+    show_board
+    @raw_input = gets.chomp
+    quit?
+    #HERE
+    computer_game_over? || computer_turn
+  end
+
+  def computer_guess
+    @processed_input = COLORS.shuffle.values_at(0..3)
+  end
+
+  def computer_game_over?
+    you_lose if @processed_input[(0..3)] == @answer
+    @turns == 0 ? you_win : computer_turn 
   end
 
 end
