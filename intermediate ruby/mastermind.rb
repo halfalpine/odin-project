@@ -34,12 +34,12 @@ class Play
   end
 
   def you_lose
-    puts "GAME OVER."
+    puts "\nGAME OVER."
     play_again?
   end
 
   def you_win
-    puts "YOU WIN!"
+    puts "\nYOU WIN!"
     play_again?
   end
 
