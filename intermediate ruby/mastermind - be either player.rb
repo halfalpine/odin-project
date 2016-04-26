@@ -154,6 +154,16 @@ class Play
     guess_clueless_spots
   end
 
+  def guess_using_inexact
+    @saved_colors.shuffle!
+    @saved_colors.length.times do
+      x = @saved_indexes.pop
+      @processed_input[x] = @saved_colors.pop
+    end
+    puts "used all the colors!" if @saved_colors.length == 0
+    puts "processed_input = #{@processed_input}"
+  end
+
   def save_inexact_matches
     @saved_colors = []
     temp_answer = @answer
