@@ -129,6 +129,9 @@ class Play
     prompt_input
     process_input
     @answer = @processed_input
+    @processed_input = COLORS.shuffle.values_at(0..3) # Do this so that first computer guess is not correct!
+    @saved_indexes = []
+    @saved_colors = []
     computer_turn
   end
 
@@ -140,12 +143,36 @@ class Play
     show_board
     @raw_input = gets.chomp
     quit?
-    #HERE
     computer_game_over? || computer_turn
   end
 
   def computer_guess
-    @processed_input = COLORS.shuffle.values_at(0..3)
+    puts "the current guess is #{@processed_input}" #HACK
+    save_exact_matches
+    save_inexact_matches
+    guess_using_inexact
+    guess_clueless_spots
+  end
+
+  def save_inexact_matches
+    @saved_colors = []
+    temp_answer = @answer
+    @saved_indexes.each do |x| #Will this work with 'index'?
+      if temp_answer[x] != @processed_input[x]
+        if temp_answer.include?(@processed_input[x])
+          temp_answer.delete_at(temp_answer.index(@processed_input[x]))
+          @saved_colors.push(@processed_input[x])
+        end
+      end
+    end
+    puts "the inexact matches are #{@saved_colors.join(" and ")}"
+  end
+
+  def save_exact_matches
+    for x in (0..3)
+      @saved_indexes.push(x) unless @processed_input[x] == @answer[x]
+      puts "the saved_indexes are #{@saved_indexes.join(" ")}"
+    end
   end
 
   def computer_game_over?
