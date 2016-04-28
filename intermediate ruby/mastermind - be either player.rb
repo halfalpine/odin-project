@@ -154,6 +154,14 @@ class Play
     guess_clueless_spots
   end
 
+  def guess_clueless_spots
+    puts "saved_indexes are #{@saved_indexes}"
+    @saved_indexes.each do |x|
+      @processed_input[x] = COLORS.shuffle[0]
+    end
+    @processed_input
+  end
+
   def guess_using_inexact
     @saved_colors.shuffle!
     @saved_colors.length.times do
