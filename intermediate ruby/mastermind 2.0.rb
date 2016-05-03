@@ -20,6 +20,8 @@ class Game
   def hack
     puts "The answer is #{@answer}"
     puts "The processed input is #{@processed_input}"
+    puts "The saved indexes are #{@saved_indexes}"
+    puts "The saved colors are #{@saved_colors}"
     puts "Hi"
   end
 
@@ -27,6 +29,8 @@ class Game
     puts Rules.give_rules
     @answer = []
     @turns = 12
+    @saved_indexes = []
+    @saved_colors = []
     pick_sides
   end
 
@@ -51,14 +55,27 @@ class Game
   def computer_guess
     save_exact_matches
     save_inexact_matches
+    hack
     guess_using_inexact
     guess_remaining_spots
   end
 
-  def save_exact_matches
-    # What is the status of @processed_input right now?
-    hack
+  def save_inexact_matches
+    temp_answer = @answer
+    @saved_indexes.each do |x| #Will this work with 'index'?
+      if temp_answer[x] != @processed_input[x]
+        if temp_answer.include?(@processed_input[x])
+          temp_answer.delete_at(temp_answer.index(@processed_input[x]))
+          @saved_colors.push(@processed_input[x])
+        end
+      end
+    end
+  end
 
+  def save_exact_matches
+    for x in (0..3)
+      @saved_indexes.push(x) unless @processed_input[x] == @answer[x]
+    end
   end
 
   def game_over? 
