@@ -1,5 +1,6 @@
 # MISSSION: User-generated code
-# NEXT STEP: computer_turn
+# NEXT STEP: computer_turn::computer_guess
+# Press ENTER to create the code
 
 module Rules
   COLORS =  %w{ RED# RED RED RED BLU BLU BLU BLU YEL YEL YEL YEL GRE GRE GRE GRE WHI WHI WHI WHI BLA BLA BLA BLA }
@@ -33,7 +34,7 @@ class Game
     puts "Press any key + ENTER to guess the code. Press ENTER to create the code."
     @input = gets.chomp
     quit?
-    @input == "" ? computer_generated_code : user_generated_code
+    @input == "" ? user_generated_code : computer_generated_code
   end
 
   def computer_turn
@@ -48,7 +49,16 @@ class Game
   end
 
   def computer_guess
-    
+    save_exact_matches
+    save_inexact_matches
+    guess_using_inexact
+    guess_remaining_spots
+  end
+
+  def save_exact_matches
+    # What is the status of @processed_input right now?
+    hack
+
   end
 
   def game_over? 
@@ -64,7 +74,17 @@ class Game
     prompt_input
     process_input
     check_input
+    set_answer
+    clear_input
     computer_turn
+  end
+
+  def set_answer
+    @answer = @processed_input
+  end
+
+  def clear_input
+    @processed_input = []
   end
 
   def prompt_input
@@ -97,6 +117,7 @@ class Game
 
   def computer_generated_code
     @answer = Rules::COLORS.shuffle.values_at(0..3)
+
     turn
   end
 
