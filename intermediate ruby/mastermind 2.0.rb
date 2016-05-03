@@ -1,3 +1,6 @@
+# MISSSION: User-generated code
+# NEXT STEP: computer_turn
+
 module Rules
   COLORS =  %w{ RED# RED RED RED BLU BLU BLU BLU YEL YEL YEL YEL GRE GRE GRE GRE WHI WHI WHI WHI BLA BLA BLA BLA }
   
@@ -14,6 +17,8 @@ class Game
   include Rules
 
   def hack
+    puts "The answer is #{@answer}"
+    puts "The processed input is #{@processed_input}"
     puts "Hi"
   end
 
@@ -32,6 +37,24 @@ class Game
   end
 
   def computer_turn
+    @turns -= 1
+    computer_guess
+    add_keys
+    log_attempts
+    display_board
+    @input = gets.chomp
+    quit?
+    gave_over? ? computer_end_credits : computer_turn
+  end
+
+  def computer_guess
+    
+  end
+
+  def game_over? 
+  end
+
+  def computer_end_credits
   end
 
   def turn 
@@ -51,7 +74,7 @@ class Game
 
   def process_input
     @processed_input = []
-    @raw_input.upcase.split.each do |word| 
+    @input.upcase.split.each do |word| 
       word.gsub(/[,]/, "")
       @processed_input.push(word[0..2].upcase)
     end
@@ -59,6 +82,7 @@ class Game
   end
 
   def check_input
+    quit? 
     check_length
     check_colors
   end
