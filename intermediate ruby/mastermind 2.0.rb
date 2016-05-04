@@ -1,5 +1,5 @@
 # MISSSION: User-generated code
-# NEXT STEP: computer_turn::computer_guess
+# NEXT STEP: computer_turn::computer_guess::guess_using_inexact
 # Press ENTER to create the code
 
 module Rules
@@ -22,7 +22,6 @@ class Game
     puts "The processed input is #{@processed_input}"
     puts "The saved indexes are #{@saved_indexes}"
     puts "The saved colors are #{@saved_colors}"
-    puts "Hi"
   end
 
   def initialize
@@ -55,14 +54,32 @@ class Game
   def computer_guess
     save_exact_matches
     save_inexact_matches
-    hack
     guess_using_inexact
     guess_remaining_spots
+    hack
+  end
+
+  def guess_remaining_spots
+    @saved_indexes.each do |x|
+      @processed_input[x] = COLORS.shuffle.at(0)
+    end
+  end
+
+  def guess_using_inexact  
+    #Take the saved colors
+    #Put each saved color in one of the remaining indexes
+    @saved_colors.shuffle!
+    @saved_colors.each do |color|
+      # What is the first available index in @processed_input?
+      index = @saved_indexes.pop 
+      @processed_input[index] = @saved_colors.pop
+    end
   end
 
   def save_inexact_matches
+    @saved_colors = []
     temp_answer = @answer
-    @saved_indexes.each do |x| #Will this work with 'index'?
+    @saved_indexes.each do |x|
       if temp_answer[x] != @processed_input[x]
         if temp_answer.include?(@processed_input[x])
           temp_answer.delete_at(temp_answer.index(@processed_input[x]))
